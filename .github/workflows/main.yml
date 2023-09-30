@@ -1,0 +1,8 @@
+name: Demo Action
+on: [workflow_dispatch]
+jobs:
+  name: print
+    runs-on: ubuntu-latest
+    steps:
+      - name: print 
+        run: echo baro baro
