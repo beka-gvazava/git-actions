@@ -7,9 +7,15 @@ jobs:
     permissions:
       id-token: write
       contents: read
-    name: guide-demo
+    name: list-nodes-and-action
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+      - name: Fetch Teleport binaries
+        uses: teleport-actions/setup@v1
+        with:
+          version: 14.0.1
       - name: Fetch credentials using Machine ID
         id: auth
         uses: teleport-actions/auth@v1
