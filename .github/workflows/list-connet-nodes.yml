@@ -27,7 +27,7 @@ jobs:
       - name: List nodes
         run: tsh -i ${{ steps.auth.outputs.identity-file }} ls
       - name: access to node
-        run: tsh ssh root@cicd.bekagvazava.com
+        run: tsh ssh root@cicd
       - name: execute test command
         run: cat /etc/os-release
       
