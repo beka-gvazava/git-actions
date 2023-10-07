@@ -1,0 +1,32 @@
+on:
+  push:
+    branches:
+      - master
+jobs:
+  demo:
+    permissions:
+      id-token: write
+      contents: read
+    name: guide-demo
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+      - name: Fetch Teleport binaries
+        uses: teleport-actions/setup@v1
+        with:
+          version: 14.0.1
+      - name: Fetch credentials using Machine ID
+        id: auth
+        uses: teleport-actions/auth@v1
+        with:
+          proxy: teleport.bekagvazava.com:443
+          token: github-token
+          certificate-ttl: 1h
+          anonymous-telemetry: 1
+      - name: List nodes
+        run: tsh -i ${{ steps.auth.outputs.identity-file }} ls
+      - name: Write file to remote
+        # Enters a command from the cluster, in this case "tsh ssh" using Machine ID credentials to gain SSH access to an SSH node, and then write the commit hash to the "github_run_log" file.
+        # Ensure that that `username` matches the username of a remote SSH username, and that hostname matches an SSH host name that is a part of the Teleport cluster configured for access.
+        run: tsh -i ${{ steps.auth.outputs.identity-file }} ssh username@hostname "echo $GITHUB_SHA >> ~/github_run_log"
