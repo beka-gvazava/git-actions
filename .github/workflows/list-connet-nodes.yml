@@ -1,0 +1,26 @@
+on:
+  push:
+    branches:
+      - master
+jobs:
+  demo:
+    permissions:
+      id-token: write
+      contents: read
+    name: guide-demo
+    runs-on: ubuntu-latest
+    steps:
+      - name: Fetch credentials using Machine ID
+        id: auth
+        uses: teleport-actions/auth@v1
+        with:
+          proxy: teleport.bekagvazava.com:443
+          token: github-token
+          certificate-ttl: 1h
+          anonymous-telemetry: 1
+      - name: List nodes
+        run: tsh -i ${{ steps.auth.outputs.identity-file }} ls
+      - name: Connect to ssh
+        run: tsh ssh root@cicd.bekagvazava.com
+      - name: execute os-release and save
+        run: cat /etc/os-release > os-release.txt
