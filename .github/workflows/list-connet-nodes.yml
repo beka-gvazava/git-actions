@@ -26,7 +26,8 @@ jobs:
           anonymous-telemetry: 1
       - name: List nodes
         run: tsh -i ${{ steps.auth.outputs.identity-file }} ls
-      - name: Connect to ssh
+      - name: access to node
         run: tsh ssh root@cicd.bekagvazava.com
-      - name: execute os-release and save
-        run: cat /etc/os-release > os-release.txt
+      - name: execute test command
+        run: cat /etc/os-release
+      
